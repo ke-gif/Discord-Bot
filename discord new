@@ -1,0 +1,22 @@
+import discord
+intents = discord.Intents.all()
+intents.typing = False
+intents.presences = False
+TOKEN = 'MTA4OTk2NjUyMTM5ODMyOTQ5Nw.GehHQx.i0Xp9WhMAUgLaN1XtRtXp378NQnE3tKPoCN_48'
+
+from discord.ext import commands
+bot = commands.Bot(command_prefix='!', intents=intents)
+@bot.event
+async def on_ready():
+    print(f'{bot.user} has connected to Discord!')
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+
+    if message.content =='picture':
+        #response = requests.get("https://twitter.com/TrendingWeibo/status/1060355105088774144/photo/1")
+        #image_link = response()["message"]
+        await message.add_reaction('😎')
+        await message.channel.send("https://twitter.com/TrendingWeibo/status/1060355105088774144/photo/1")
+bot.run(TOKEN)
