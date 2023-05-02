@@ -42,6 +42,13 @@ def calculate_cards(player, score):
 
 # Play the game
 def play_game(name, player, score, deck, opponent):
+    if len(player) == 0:
+        player.append(deal_card(deck))
+    if len(player) == 1:
+        player.append(deal_card(deck))
+    print("%s, your cards are: %s" % (name, player))
+    score = calculate_cards(player, score)
+    print("%s, your current score is: %d" % (name, score))
     user_input = input("Type 'y' to draw a card: ")
     while user_input == "y":
         player.append(deal_card(deck))
@@ -71,9 +78,14 @@ for i in range(2):
     player2.append(deal_card(deck))
     player1.append(deal_card(deck))
 print('%s, your cards are: %s' % ("Kelly", player2))
-print('The computer has: %s' % player1[0])
+print('The computer has: %s and one hidden card' % player1[0])
 playerscore = calculate_cards(player2, playerscore)
 computerscore = calculate_cards(player1, computerscore)
+
+# Deal two more cards to the computer
+player1.append(deal_card(deck))
+player1.append(deal_card(deck))
+
 
 playerscore = play_game("Kelly", player2, playerscore, deck, player1)
 computerscore = play_game("Computer", player1, computerscore, deck, player2)
