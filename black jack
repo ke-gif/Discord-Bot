@@ -1,0 +1,90 @@
+import random
+
+deckitems = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+card_colors = ["Spades", "Diamonds", "Hearts", "Clubs"]
+
+deck = []
+
+player1 = []
+player2 = []
+playerscore = 0
+computerscore = 0
+
+# Generate a deck of cards
+def generate_deck():
+    global deck
+    for color in card_colors:
+        for point in deckitems:
+            deck.append(point + " of " + color)
+    print(deck)
+
+# Deal a card
+def deal_card(deck):
+    if len(deck) == 0:
+        print("The deck is empty. No cards can be dealt.")
+        return None
+    else:
+        random.shuffle(deck)
+        return deck.pop(0)
+
+# Calculate score based on cards in hand
+def calculate_cards(player, score):
+    for card in player:
+        if score >= 11 and card[0] == "A":
+            score += 1
+        else:
+            value = card[0]
+            if value.isalpha():
+                score += 10
+            else:
+                score += int(value)
+    return score
+
+# Play the game
+def play_game(name, player, score, deck, opponent):
+    user_input = input("Type 'y' to draw a card: ")
+    while user_input == "y":
+        player.append(deal_card(deck))
+        print("%s, now you have: " % name, player)
+        score = calculate_cards(player, score)
+        print("%s, your current score is: %d" % (name, score))
+        if score > 21:
+            print("%s, you lose!" % name)
+            break
+        user_input = input('%s, do you want another card? (Type "y" for yes, "n" for no): ' % name)
+    if name == "Computer":
+        while score < 17:
+            print("The computer is drawing another card...")
+            opponent.append(deal_card(deck))
+            print("The computer now has: ", opponent)
+            score = calculate_cards(opponent, score)
+            print("The computer's score is now: %d" % score)
+        if score > 21:
+            print("The computer loses!")
+        else:
+            print("The computer stands.")
+    return score
+
+generate_deck()
+# Deal two cards to the player and the computer
+for i in range(2):
+    player2.append(deal_card(deck))
+    player1.append(deal_card(deck))
+print('%s, your cards are: %s' % ("Kelly", player2))
+print('The computer has: %s' % player1[0])
+playerscore = calculate_cards(player2, playerscore)
+computerscore = calculate_cards(player1, computerscore)
+
+playerscore = play_game("Kelly", player2, playerscore, deck, player1)
+computerscore = play_game("Computer", player1, computerscore, deck, player2)
+
+if playerscore > 21:
+    print("Sorry, Kelly, you lost!")
+elif computerscore > 21:
+    print("Congratulations, Kelly, you win!")
+elif playerscore > computerscore:
+    print("Congratulations, Kelly, you win!")
+elif playerscore < computerscore:
+    print("Sorry, Kelly, you lost!")
+else:
+    print("It's a tie!")
