@@ -75,13 +75,15 @@ while play_again != 'EXIT':
                 print (more_card + " for a new total of " + str(total))
                 if total > 21: #lose condition
                     print("You lose!")
-                    play_again = input("Would you like to play again? EXIT to leave\n")
+                    break
+                 
                 elif total == 21: #winning condition
                     print("You win")
-                    play_again = input("Would you like to play again? EXIT to leave\n")
+                    break
+
                 else:
                     continue
-            elif answer.lower() == 'N':
+            elif answer.lower() == 'n':
                 print("he put another card out")
                 print("a " + dealer_card2 + " for a total of " + str(dealer_total))
                 if dealer_total < 17:
