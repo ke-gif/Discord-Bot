@@ -1,0 +1,53 @@
+import tkinter as tk
+import requests
+import matplotlib.pyplot as plt
+
+HEIGHT = 700
+WIDTH = 800
+
+def get_weather_forecast(city):
+    weather_key = '8bdc67502b740ebdd020cbbde6f76225'
+    url = 'https://api.openweathermap.org/data/2.5/forecast'
+    params = {'appid': weather_key, 'q': city, 'units': 'imperial'}
+    response = requests.get(url, params=params)
+    weather_data = response.json()
+
+    temperatures = [data['main']['temp'] for data in weather_data['list']]
+    return temperatures[:5]
+
+def plot_temperature_graph(temperatures):
+    dates = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5']
+
+    plt.plot(dates, temperatures, color='blue', marker='o')
+    plt.xlabel('Date')
+    plt.ylabel('Temperature (°F)')
+    plt.title('Temperature Variation')
+
+    plt.show()
+
+def get_and_plot_weather_forecast():
+    city = entry.get()
+    temperatures = get_weather_forecast(city)
+    plot_temperature_graph(temperatures)
+
+root = tk.Tk()
+
+canvas = tk.Canvas(root, height=HEIGHT, width=WIDTH)
+canvas.pack()
+
+frame = tk.Frame(root, bg='#80c1ff', bd=5)
+frame.place(relx=0.5, rely=0.1, relwidth=0.75, relheight=0.1, anchor='n')
+
+entry = tk.Entry(frame, font=('Helvetica', 14))
+entry.place(relheight=1, relwidth=0.65)
+
+button = tk.Button(frame, text="Get Weather Forecast", font=('Helvetica', 14), command=get_and_plot_weather_forecast)
+button.place(relx=0.7, relheight=1, relwidth=0.3)
+
+lower_frame = tk.Frame(root, bg='#80c1ff', bd=10)
+lower_frame.place(relx=0.5, rely=0.25, relwidth=0.75, relheight=0.6, anchor='n')
+
+label = tk.Label(lower_frame, bg="white", font=('Helvetica', 14))
+label.place(relwidth=1, relheight=1)
+
+root.mainloop()
